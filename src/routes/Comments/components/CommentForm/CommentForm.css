@@ -1,0 +1,12 @@
+.form {
+  display: flex;
+  align-items: center;
+}
+.textarea {
+  margin-right: 10px;
+  resize: vertical;
+  flex: 1;
+}
+.input {
+  margin-right: 10px;
+}
