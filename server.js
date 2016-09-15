@@ -8,6 +8,7 @@ var COMMENTS_FILE = path.join(__dirname, 'comments.json')
 var PEOPLE_FILE = path.join(__dirname, 'people.json')
 
 var app = express()
+var peopleCache
 
 app.set('port', process.env.port || 3000)
 
@@ -25,25 +26,38 @@ app.get('/', function (req, res) {
 })
 
 app.get('/api/search', function (req, res) {
-  fs.readFile(PEOPLE_FILE, function (err, data) {
-    console.log('req.body = ', req.body)
-    successReadWrite(err, res, JSON.parse(data).slice(0, 10))
-  })
+  if (peopleCache) {
+    successReadWrite(null, res, peopleCache.slice(0, 100))
+  } else {
+    fs.readFile(PEOPLE_FILE, function (err, data) {
+      peopleCache = JSON.parse(data)
+      successReadWrite(err, res, peopleCache.slice(0, 100))
+    })
+  }
 })
 
 app.post('/api/search', function (req, res) {
-  fs.readFile(PEOPLE_FILE, function (err, data) {
-    if (err) {
-      console.log(err)
-      process.exit(1)
-    }
+  var queries = req.body.query.split(' ')
 
-    var people = JSON.parse(data)
-    var queries = req.body.query.split(' ')
-    var filteredPepole = getPeopleSearchResults(people, queries)
-    successReadWrite(err, res, filteredPepole.slice(0, 100))
-  })
+  if (peopleCache) {
+    returnRelevantPepole(queries, peopleCache, null, res)
+  } else {
+    fs.readFile(PEOPLE_FILE, function (err, data) {
+      if (err) {
+        console.log(err)
+        process.exit(1)
+      }
+      peopleCache = JSON.parse(data)
+      returnRelevantPepole(queries, peopleCache, err, res)
+    })
+  }
 })
+
+function returnRelevantPepole (queries, peopleCache, err, res) {
+  var noQuery = queries.length === 1 && queries[0] === ''
+  var filteredPepole = noQuery ? peopleCache : getPeopleSearchResults(peopleCache, queries)
+  successReadWrite(err, res, filteredPepole.slice(0, 100))
+}
 
 app.get('/api/comments', function (req, res) {
   fs.readFile(COMMENTS_FILE, function (err, data) {
