@@ -5,7 +5,7 @@ const SearchInput = React.createClass({
     onSearchSubmit: React.PropTypes.func
   },
   getInitialState () {
-    return {searchQuery: 'tet'}
+    return {searchQuery: 'dr'}
   },
   handleInputChange (e) {
     this.setState({searchQuery: e.target.value})
