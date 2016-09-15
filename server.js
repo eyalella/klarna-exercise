@@ -2,6 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var express = require('express')
 var bodyParser = require('body-parser')
+var getPeopleSearchResults = require('./server/modules/search')
 
 var COMMENTS_FILE = path.join(__dirname, 'comments.json')
 var PEOPLE_FILE = path.join(__dirname, 'people.json')
@@ -25,7 +26,22 @@ app.get('/', function (req, res) {
 
 app.get('/api/search', function (req, res) {
   fs.readFile(PEOPLE_FILE, function (err, data) {
+    console.log('req.body = ', req.body)
     successReadWrite(err, res, JSON.parse(data).slice(0, 10))
+  })
+})
+
+app.post('/api/search', function (req, res) {
+  fs.readFile(PEOPLE_FILE, function (err, data) {
+    if (err) {
+      console.log(err)
+      process.exit(1)
+    }
+
+    var people = JSON.parse(data)
+    var queries = req.body.query.split(' ')
+    var filteredPepole = getPeopleSearchResults(people, queries)
+    successReadWrite(err, res, filteredPepole.slice(0, 100))
   })
 })
 

@@ -10,7 +10,8 @@ const Search = React.createClass({
     return {data: []}
   },
   componentDidMount () {
-    xhr.doGet(API_SEARCH_ADDRESS, data => {
+    const payload = {query: 'Dr'}
+    xhr.doPost(API_SEARCH_ADDRESS, payload, data => {
       this.setState({data})
     }, (xhr, status, err) => {
       console.log(API_SEARCH_ADDRESS, status, err.toString())
