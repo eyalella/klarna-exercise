@@ -1,7 +1,7 @@
 {
-  "name": "project-starter",
+  "name": "klarna-exercise",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Yello Pages type search app",
   "main": "index.js",
   "scripts": {
     "start": "npm run prod",
@@ -28,32 +28,16 @@
     "eslint-plugin-promise": "^2.0.1",
     "eslint-plugin-react": "^6.2.0",
     "eslint-plugin-standard": "^2.0.0",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "file-loader": "^0.9.0",
-    "node-sass": "^3.9.3",
-    "postcss": "^5.2.0",
-    "postcss-cssnext": "^2.8.0",
-    "postcss-loader": "^0.13.0",
-    "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
-    "uglify-loader": "^1.3.0",
-    "url-loader": "^0.5.7",
     "webpack": "^1.13.2",
     "webpack-dashboard": "^0.1.8",
     "webpack-dev-server": "^1.15.1"
   },
   "dependencies": {
-    "immutability-helper": "^2.0.0",
     "jquery": "^3.1.0",
-    "lodash": "^4.15.0",
-    "normalize.css": "^4.2.0",
     "react": "^15.3.1",
-    "react-addons-css-transition-group": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
-    "react-router": "^2.8.0",
-    "react-toolbox": "^1.2.1",
-    "redux": "^3.6.0",
-    "remarkable": "^1.6.2"
+    "react-router": "^2.8.0"
   }
 }

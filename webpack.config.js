@@ -1,6 +1,5 @@
 var path = require('path')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
-var cssnext = require('postcss-cssnext')
 
 module.exports = {
   entry: './src/app.js',
@@ -19,11 +18,6 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /\.jpg$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'url-loader'
-      },
-      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel'
@@ -32,8 +26,7 @@ module.exports = {
         test: /(\.scss|\.css)$/,
         loaders: [
           require.resolve('style-loader'),
-          require.resolve('css-loader') + '?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
-          require.resolve('sass-loader') + '?sourceMap'
+          require.resolve('css-loader') + '?sourceMap&modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'
         ]
       }
     ]
@@ -51,8 +44,5 @@ module.exports = {
         secure: false
       }
     }
-  },
-  postcss: function () {
-    return [cssnext]
   }
 }

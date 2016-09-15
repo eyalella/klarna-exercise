@@ -26,7 +26,7 @@ function getPeopleSearchResults (people, queries) {
 
 function getPersonRelevantKeys (person) {
   return Object.keys(person).filter(function (key) {
-    return key !== 'avatar_origin' && key !== 'avatar_image' && key !== 'address'
+    return key !== 'avatar_origin' && key !== 'avatar_image'
   })
 }
 
