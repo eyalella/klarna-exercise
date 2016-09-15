@@ -1,7 +1,6 @@
 var path = require('path')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var cssnext = require('postcss-cssnext')
-var DashboardPlugin = require('webpack-dashboard/plugin')
 
 module.exports = {
   entry: './src/app.js',
@@ -14,8 +13,7 @@ module.exports = {
         { from: './src/index.html' },
         { from: './src/klarna-ui-css-components.css' },
         { from: './assets' }
-    ]),
-    new DashboardPlugin()
+    ])
   ],
   devtool: 'source-map',
   module: {
