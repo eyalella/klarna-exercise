@@ -9,12 +9,13 @@ const SearchInput = React.createClass({
   },
   handleInputChange (e) {
     this.setState({searchQuery: e.target.value})
+    this.props.onSearchSubmit(e.target.value)
   },
-  handleSearchSubmit (e) {
-    if (e.keyCode === 13) {
-      this.props.onSearchSubmit(e.target.value)
-    }
-  },
+  // handleSearchSubmit (e) {
+  //   if (e.keyCode === 13) {
+  //     this.props.onSearchSubmit(e.target.value)
+  //   }
+  // },
   render () {
     const LABEL = 'Type your search query'
     return (
@@ -25,7 +26,6 @@ const SearchInput = React.createClass({
         <input
           className='cui__input__input'
           onChange={this.handleInputChange}
-          onKeyDown={this.handleSearchSubmit}
           value={this.state.searchQuery}
         />
       </div>

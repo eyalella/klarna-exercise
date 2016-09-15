@@ -8,11 +8,6 @@ const Navigation = React.createClass({
       <div className={styles.container}>
         <nav className={styles.navigation}>
           <Link
-            to='/comments'
-            className={styles.link}
-            activeClassName={styles.active}
-          >comments</Link>
-          <Link
             to='/search'
             className={styles.link}
             activeClassName={styles.active}

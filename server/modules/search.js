@@ -1,21 +1,23 @@
 function getPeopleSearchResults (people, queries) {
   var filteredPepole = []
-  var value, keys, personInResults
+  var value, keys, matchedQueries
   people.forEach(function (person) {
-    personInResults = false
     keys = getPersonRelevantKeys(person)
-    for (var i = 0; i < keys.length; i++) {
-      value = person[keys[i]].toString()
-      for (var y = 0; y < queries.length; y++) {
-        if (value.indexOf(queries[y]) > -1) {
-          filteredPepole.push(person)
-          personInResults = true
+    matchedQueries = 0
+    for (var i = 0; i < queries.length; i++) {
+      if (matchedQueries < i) {
+        break
+      }
+      for (var y = 0; y < keys.length; y++) {
+        value = person[keys[y]].toString()
+        if (value.indexOf(queries[i]) > -1) {
+          matchedQueries++
           break
         }
       }
-      if (personInResults) {
-        break
-      }
+    }
+    if (matchedQueries === queries.length) {
+      filteredPepole.push(person)
     }
   })
   return filteredPepole
@@ -23,7 +25,7 @@ function getPeopleSearchResults (people, queries) {
 
 function getPersonRelevantKeys (person) {
   return Object.keys(person).filter(function (key) {
-    return key !== 'avatar_origin' && key !== 'avatar_image'
+    return key !== 'avatar_origin' && key !== 'avatar_image' && key !== 'address'
   })
 }
 
