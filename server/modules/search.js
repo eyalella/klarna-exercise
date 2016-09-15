@@ -9,7 +9,7 @@ function getPeopleSearchResults (people, queries) {
         break
       }
       for (var y = 0; y < keys.length; y++) {
-        value = person[keys[y]].toString()
+        value = person[keys[y]].toString().toLowerCase()
         if (value.indexOf(queries[i]) > -1) {
           matchedQueries++
           break

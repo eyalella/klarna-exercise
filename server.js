@@ -29,7 +29,7 @@ app.get('/api/search', function (req, res) {
     successReadWrite(null, res, peopleCache.slice(0, 100))
   } else {
     fs.readFile(PEOPLE_FILE, function (err, data) {
-      peopleCache = JSON.parse(data)
+      cachePeople(data)
       successReadWrite(err, res, peopleCache.slice(0, 100))
     })
   }
@@ -46,7 +46,7 @@ app.post('/api/search', function (req, res) {
         console.log(err)
         process.exit(1)
       }
-      peopleCache = JSON.parse(data)
+      cachePeople(data)
       returnRelevantPepole(queries, peopleCache, err, res)
     })
   }
@@ -56,6 +56,14 @@ function returnRelevantPepole (queries, peopleCache, err, res) {
   var noQuery = queries.length === 1 && queries[0] === ''
   var filteredPepole = noQuery ? peopleCache : getPeopleSearchResults(peopleCache, queries)
   successReadWrite(err, res, filteredPepole.slice(0, 100))
+}
+
+function cachePeople (data) {
+  peopleCache = JSON.parse(data).map(function (person) {
+    person.birthday = new Date(person.birthday).toDateString()
+    person.address = `${person.address.street}, ${person.address.city}, ${person.address.country}.`
+    return person
+  })
 }
 
 function successReadWrite (err, res, payload) {

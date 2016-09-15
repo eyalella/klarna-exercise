@@ -5,12 +5,6 @@ const Result = React.createClass({
   propTypes: {
     item: React.PropTypes.object
   },
-  address (addr = {}) {
-    return `${addr.street}, ${addr.city}, ${addr.country}.`
-  },
-  birthDay (time) {
-    return new Date(time).toDateString()
-  },
   render () {
     return (
       <div>
@@ -27,10 +21,10 @@ const Result = React.createClass({
           <br />
           <p className='cui__selector--direct__description'>
             <span className={styles.italic}>id - {this.props.item.id}<br /></span>
-            <span className={styles.italic}>BirthDay - {this.birthDay(this.props.item.birthday)}<br /></span>
+            <span className={styles.italic}>BirthDay - {this.props.item.birthday}<br /></span>
             <span className={styles.italic}>Email - {this.props.item.email}<br /></span>
             <span className={styles.italic}>Phone - {this.props.item.phone}<br /></span>
-            <span className={styles.italic}>Address - {this.address(this.props.item.address)}<br /></span>
+            <span className={styles.italic}>Address - {this.props.item.address}<br /></span>
           </p>
         </div>
       </div>
