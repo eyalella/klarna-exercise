@@ -5,9 +5,12 @@ var bodyParser = require('body-parser')
 var getPeopleSearchResults = require('./server/modules/search')
 
 var PEOPLE_FILE = path.join(__dirname, 'people.json')
+var CHUNK_SIZE = 10
 
 var app = express()
 var peopleCache
+var searchResultCache
+var lastPersonIndex = 0
 
 app.set('port', process.env.port || 3000)
 
@@ -25,37 +28,37 @@ app.get('/', function (req, res) {
 })
 
 app.get('/api/search', function (req, res) {
-  if (peopleCache) {
-    successReadWrite(null, res, peopleCache.slice(0, 100))
-  } else {
-    fs.readFile(PEOPLE_FILE, function (err, data) {
-      cachePeople(data)
-      successReadWrite(err, res, peopleCache.slice(0, 100))
-    })
-  }
+  lastPersonIndex = 0
+  fs.readFile(PEOPLE_FILE, function (err, data) {
+    cachePeople(data)
+    var peopleChunk = getPeopleCunk(peopleCache)
+    searchResultCache = peopleCache
+    successReadWrite(err, res, peopleChunk)
+  })
+})
+
+app.get('/api/search/load-more', function (req, res) {
+  var peopleChunk = getPeopleCunk(searchResultCache)
+  successReadWrite(null, res, peopleChunk)
 })
 
 app.post('/api/search', function (req, res) {
-  var queries = req.body.query.split(' ')
-
+  var queries, noQuery
+  lastPersonIndex = 0
   if (peopleCache) {
-    returnRelevantPepole(queries, peopleCache, null, res)
-  } else {
-    fs.readFile(PEOPLE_FILE, function (err, data) {
-      if (err) {
-        console.log(err)
-        process.exit(1)
-      }
-      cachePeople(data)
-      returnRelevantPepole(queries, peopleCache, err, res)
-    })
+    queries = req.body.query.split(' ')
+    noQuery = queries.length === 1 && queries[0] === ''
+    searchResultCache = noQuery ? peopleCache : getPeopleSearchResults(peopleCache, queries)
+
+    var peopleChunk = getPeopleCunk(searchResultCache)
+    successReadWrite(null, res, peopleChunk)
   }
 })
 
-function returnRelevantPepole (queries, peopleCache, err, res) {
-  var noQuery = queries.length === 1 && queries[0] === ''
-  var filteredPepole = noQuery ? peopleCache : getPeopleSearchResults(peopleCache, queries)
-  successReadWrite(err, res, filteredPepole.slice(0, 100))
+function getPeopleCunk (people) {
+  var peopleChunk = people.slice(lastPersonIndex, lastPersonIndex + CHUNK_SIZE)
+  lastPersonIndex += CHUNK_SIZE
+  return peopleChunk
 }
 
 function cachePeople (data) {
@@ -71,7 +74,7 @@ function successReadWrite (err, res, payload) {
     console.error(err)
     process.exit(1)
   }
-  res.json(payload)
+  res.json({payload, length: searchResultCache.length})
 }
 
 app.listen(app.get('port'), function () {

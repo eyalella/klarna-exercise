@@ -1,6 +1,6 @@
 function getPeopleSearchResults (people, queries) {
   var filteredPepole = []
-  var value, keys, matchedQueries
+  var value, keys, matchedQueries, query
   people.forEach(function (person) {
     keys = getPersonRelevantKeys(person)
     matchedQueries = 0
@@ -8,9 +8,10 @@ function getPeopleSearchResults (people, queries) {
       if (matchedQueries < i) {
         break
       }
+      query = queries[i].toString().toLowerCase()
       for (var y = 0; y < keys.length; y++) {
         value = person[keys[y]].toString().toLowerCase()
-        if (value.indexOf(queries[i]) > -1) {
+        if (value.indexOf(query) > -1) {
           matchedQueries++
           break
         }

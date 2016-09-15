@@ -13,7 +13,6 @@ const xhr = {
 }
 
 function xhrRequest (type, options) {
-  console.log(options)
   jQuery.ajax({
     dataType: 'json',
     cache: false,

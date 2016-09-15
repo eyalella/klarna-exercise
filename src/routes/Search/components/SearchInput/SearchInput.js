@@ -11,11 +11,6 @@ const SearchInput = React.createClass({
     this.setState({searchQuery: e.target.value})
     this.props.onSearchSubmit(e.target.value)
   },
-  // handleSearchSubmit (e) {
-  //   if (e.keyCode === 13) {
-  //     this.props.onSearchSubmit(e.target.value)
-  //   }
-  // },
   render () {
     const LABEL = 'Type your search query'
     return (
