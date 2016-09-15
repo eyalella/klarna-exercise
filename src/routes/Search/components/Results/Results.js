@@ -27,23 +27,25 @@ const Results = React.createClass({
   resultsTitle () {
     if (this.props.loading) {
       return 'Loading...'
+    } else if (this.props.data.length === this.props.totalResults) {
+      return `Showing ${this.props.totalResults} Search results`
     }
     return `Showing ${this.props.data.length} / ${this.props.totalResults} Search results`
   },
   render () {
     const results = this.results()
     return (
-      <div>
-        <div className={styles.results}>
-          <div className='cui__selector--direct title'>
-            <h2 className='cui__selector--direct__title'>
-              {this.resultsTitle()}
-            </h2>
-            {results}
-          </div>
-          <div className={styles.loadMore}>
-            {this.showMoreButton(results.length)}
-          </div>
+      <div className={styles.results}>
+        <div className='cui__selector--direct title'>
+          <h2 className={`${styles.title} cui__selector--direct__title`}>
+            <span>{this.resultsTitle()}</span>
+          </h2>
+        </div>
+        <div className={styles.resultsList}>
+          {results}
+        </div>
+        <div className={styles.loadMore}>
+          {this.showMoreButton(results.length)}
         </div>
       </div>
     )

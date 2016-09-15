@@ -2,6 +2,20 @@
   margin-top: 40px;
   margin-bottom: 40px;
 }
+.resultsList {
+  padding-top: 93px;
+}
 .loadMore {
   margin-top: 40px;
+}
+.title {
+  position: fixed;
+  background: #fcfcfc;
+  width: 100%;
+  display: inline-block;
+  z-index: 100;
+  top: 80px;
+  border-bottom: 1px solid #e5e5e6;
+  margin-bottom: 0;
+  padding: 16px 0;
 }
