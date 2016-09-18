@@ -37,11 +37,6 @@ module.exports = {
         target: 'http://localhost:3000/',
         changeOrigin: true,
         secure: false
-      },
-      '/api/comments': {
-        target: 'http://localhost:3000/',
-        changeOrigin: true,
-        secure: false
       }
     }
   }

@@ -2,55 +2,40 @@ import React from 'react'
 import styles from './Search.css'
 import Results from '../Results'
 import SearchInput from '../SearchInput'
-import xhr from '../../../../utils/xhr'
+import debounce from 'lodash/debounce'
+import { fatchInitialData, loadMoreHandler, queryChangeHandler } from './modules'
 
-const API_SEARCH_ADDRESS = 'api/search'
+let onQueryChange
 
 const Search = React.createClass({
   getInitialState () {
     return {
       data: [],
       loading: true,
-      total: 0
+      total: 0,
+      query: ''
     }
   },
   componentDidMount () {
-    xhr.doGet(API_SEARCH_ADDRESS, (data) => {
-      this.setState({
-        data: data.payload,
-        total: data.length,
-        loading: false
-      })
-    }, (xhr, status, err) => {
-      console.log(API_SEARCH_ADDRESS, status, err.toString())
-    })
+    onQueryChange = debounce(queryChangeHandler.bind(this), 100, {leading: true})
+    fatchInitialData.bind(this)()
   },
-  handleSearchSubmit (query) {
-    const payload = {query}
-    xhr.doPost(API_SEARCH_ADDRESS, payload, (data) => {
-      this.setState({
-        data: data.payload,
-        total: data.length
-      })
-    }, (xhr, status, err) => {
-      console.log(API_SEARCH_ADDRESS, status, err.toString())
-    })
+  handleQueryChange (query) {
+    this.setState({query})
+    onQueryChange(query)
   },
   handleLoadMore () {
-    xhr.doGet(`${API_SEARCH_ADDRESS}/load-more`, data => {
-      this.setState({
-        data: [...this.state.data, ...data.payload],
-        total: data.length
-      })
-    }, (xhr, status, err) => {
-      console.log(API_SEARCH_ADDRESS, status, err.toString())
-    })
+    loadMoreHandler.bind(this)()
   },
   render () {
     return (
       <div className={styles.search}>
-        <SearchInput onSearchSubmit={this.handleSearchSubmit} />
+        <SearchInput
+          query={this.state.query}
+          onInputChange={this.handleQueryChange}
+        />
         <Results
+          query={this.state.query}
           loading={this.state.loading}
           onLoadMore={this.handleLoadMore}
           data={this.state.data}

@@ -1,16 +1,14 @@
 import React from 'react'
+
 import styles from './SearchInput.css'
 
 const SearchInput = React.createClass({
   propTypes: {
-    onSearchSubmit: React.PropTypes.func
+    onInputChange: React.PropTypes.func,
+    query: React.PropTypes.string
   },
-  getInitialState () {
-    return {searchQuery: ''}
-  },
-  handleInputChange (e) {
-    this.setState({searchQuery: e.target.value})
-    this.props.onSearchSubmit(e.target.value)
+  handleInputChange (event) {
+    this.props.onInputChange(event.target.value)
   },
   render () {
     const LABEL = 'Type your search query'
@@ -18,12 +16,12 @@ const SearchInput = React.createClass({
       <div className={styles.searchInput}>
         <div className='cui__input giant'>
           <label className='cui__input__label'>
-              {this.state.searchQuery ? '' : LABEL}
+              {this.props.query ? '' : LABEL}
           </label>
           <input
             className='cui__input__input'
             onChange={this.handleInputChange}
-            value={this.state.searchQuery}
+            value={this.props.query}
           />
         </div>
       </div>

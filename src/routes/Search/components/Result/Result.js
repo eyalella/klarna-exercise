@@ -1,35 +1,54 @@
 import React from 'react'
+import Highlighter from 'react-highlight-words'
 import styles from './Result.css'
 
 const Result = React.createClass({
   propTypes: {
-    item: React.PropTypes.object
+    item: React.PropTypes.object,
+    query: React.PropTypes.string
+  },
+  quotes () {
+    return ['chuck', 'quote'].map(this.wrapWithHighlight)
+  },
+  bio () {
+    return ['id', 'birthday', 'email', 'phone', 'address'].map(this.wrapWithHighlight)
+  },
+  wrapWithHighlight (prop) {
+    return (
+      <div key={prop}>
+        <span className={styles.italic}>{prop} - </span>
+        <Highlighter
+          highlightClassName='Highlight'
+          searchWords={this.props.query.split(' ')}
+          textToHighlight={this.props.item[prop]}
+        />
+      </div>
+    )
   },
   render () {
     return (
       <div>
         <div className='cui__selector--direct__item'>
-          <img className={styles.userAvatar} src={this.props.item.avatar_origin} />
+          <img className={styles.userAvatar} src={imgSrc(this.props.item)} />
           <div className='cui__selector--direct__label'>
-            {this.props.item.name}
+            {this.wrapWithHighlight('name')}
           </div>
 
-          <p>
-            <span className={styles.quote}>&quot;{this.props.item.chuck}&quot;</span> <br />
-            <span className={styles.quote}>&quot;{this.props.item.quote}&quot;</span>
-          </p>
+          <div className={styles.quotes}>
+            {this.quotes()}
+          </div>
           <br />
-          <p className='cui__selector--direct__description'>
-            <span className={styles.italic}>id - {this.props.item.id}<br /></span>
-            <span className={styles.italic}>BirthDay - {this.props.item.birthday}<br /></span>
-            <span className={styles.italic}>Email - {this.props.item.email}<br /></span>
-            <span className={styles.italic}>Phone - {this.props.item.phone}<br /></span>
-            <span className={styles.italic}>Address - {this.props.item.address}<br /></span>
-          </p>
+          <div className='cui__selector--direct__description'>
+            {this.bio()}
+          </div>
         </div>
       </div>
     )
   }
 })
+
+function imgSrc (item) {
+  return item.avatar_origin.replace('400x400', '80x80')
+}
 
 export default Result

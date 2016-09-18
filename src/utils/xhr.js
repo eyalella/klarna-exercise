@@ -1,4 +1,4 @@
-import jQuery from 'jquery'
+import $ from 'jquery'
 
 const xhr = {
   doGet (url, success, error) {
@@ -13,7 +13,7 @@ const xhr = {
 }
 
 function xhrRequest (type, options) {
-  jQuery.ajax({
+  $.ajax({
     dataType: 'json',
     cache: false,
     timeout: 3000,

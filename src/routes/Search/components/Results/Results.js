@@ -7,11 +7,16 @@ const Results = React.createClass({
     data: React.PropTypes.array,
     onLoadMore: React.PropTypes.func,
     totalResults: React.PropTypes.number,
-    loading: React.PropTypes.bool
+    loading: React.PropTypes.bool,
+    query: React.PropTypes.string
   },
   results () {
     return this.props.data.map(item => (
-      <Result key={item.id} item={item} />
+      <Result
+        key={item.id}
+        item={item}
+        query={this.props.query}
+      />
     ))
   },
   showMoreButton (resultsLength) {
